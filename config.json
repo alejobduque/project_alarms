@@ -1,0 +1,6 @@
+{
+    "DEBUG": true,
+    "NOTIFICATIONS_SQLALCHEMY": false,
+    "PORT": 5000,
+    "POSTGRESQL_DB_ALARM": "postgresql://postgres:password@localhost/db-senior"
+}
