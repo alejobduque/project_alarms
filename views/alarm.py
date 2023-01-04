@@ -1,10 +1,14 @@
 import json
 from flask import Blueprint, jsonify, request
+
+
 from services.alarm_service import AlarmService
+from utils.request_wrapper import RequestWrapper
 
 alarm_routes = Blueprint('alarm', __name__)
 
 
+@RequestWrapper
 @alarm_routes.route('/get_alarms')
 def get_alarms():
     body = request.json
@@ -17,9 +21,10 @@ def get_alarms():
             end_date=end_date
         )
 
-    return jsonify(data)
+    return {"data": data, "details": []}
 
 
+@RequestWrapper
 @alarm_routes.route('/add_alarms', methods=['POST'])
 def add_alarms():
     body = request.json
@@ -27,16 +32,16 @@ def add_alarms():
     if body:
         data = AlarmService().add_alarms(alarms=body)
 
-    return jsonify(data)
+    return {"data": data, "details": []}
 
 
+@RequestWrapper
 @alarm_routes.route('/delete_alarms', methods=['PUT'])
 def delete_alarms():
     body = request.json
     date = body.get("date")
     oldest = body.get("oldest")
-    data = False
     if date and oldest is not None:
         result = AlarmService().delete_alarms(date=date, oldest=oldest)
 
-    return jsonify({"result": result})
+    return {"data": result, "details": []}
